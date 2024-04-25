@@ -344,6 +344,7 @@ class FlashBar<T> extends StatefulWidget {
   const FlashBar({
     super.key,
     required this.controller,
+    this.alignment,
     this.position = FlashPosition.bottom,
     this.behavior = FlashBehavior.fixed,
     this.dismissDirections = FlashDismissDirection.values,
@@ -378,6 +379,14 @@ class FlashBar<T> extends StatefulWidget {
   });
 
   final FlashController<T> controller;
+
+  /// The alignment of the flashbar.
+  ///
+  /// By default, based on the [position] of the flashbar:
+  /// - [FlashPosition.top] => [Alignment.topCenter]
+  /// - [FlashPosition.bottom] => [Alignment.bottomCenter]
+  ///
+  final AlignmentGeometry? alignment;
 
   /// Flash can be based on [FlashPosition.top] or on [FlashPosition.bottom] of your screen.
   final FlashPosition position;
@@ -618,7 +627,7 @@ class _FlashBarState extends State<FlashBar> with SingleTickerProviderStateMixin
     }
 
     return Align(
-      alignment: position == FlashPosition.top ? Alignment.topCenter : Alignment.bottomCenter,
+      alignment: widget.alignment ?? (position == FlashPosition.top ? Alignment.topCenter : Alignment.bottomCenter),
       child: AnimatedPadding(
         padding: MediaQuery.of(context).viewInsets + (widget.margin ?? barTheme?.margin ?? defaults.margin),
         duration: widget.insetAnimationDuration,
